@@ -7,8 +7,6 @@ st.set_page_config(
 
 st.title('🎈 HAI Chatbot demo')
 
-st.write('building...')
-
 # Set OpenAI API key from Streamlit secrets
 openai.api_key = st.secrets["OPENAI_API_KEY"]
 
@@ -28,8 +26,8 @@ for message in st.session_state.messages:
 
 
 # React to user input
-if prompt := st.chat_input("What is up?"):
-    # Display user message in chat message container
+if prompt := st.chat_input("어떤 도움이 필요하신가요?"):
+    # Display user message in chat message contain
     st.chat_message("user").markdown(prompt)
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
