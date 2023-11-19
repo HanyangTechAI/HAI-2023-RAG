@@ -1,8 +1,9 @@
 import streamlit as st
-from llmapi import get_generation_prompt, generate
+from llm import get_generation_prompt, generate
 
 st.set_page_config(
         page_title="HAI ChatBot Demo",
+        layout="wide",
 )
 
 st.title('🎈 HAI Chatbot demo')
