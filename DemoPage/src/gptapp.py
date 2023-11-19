@@ -1,6 +1,5 @@
 import streamlit as st
 import openai
-from llmapi import createTokens
 
 st.set_page_config(
         page_title="HAI ChatBot Demo",
@@ -39,9 +38,15 @@ if prompt := st.chat_input("어떤 도움이 필요하신가요?"):
     with st.chat_message("assistant"):
         message_placeholder = st.empty()
         full_response = ""
-        for token in createTokens(prompt):
-            full_response += token
+        for response in openai.ChatCompletion.create(
+            model=st.session_state["openai_model"],
+            messages=[
+                {"role": m["role"], "content": m["content"]}
+                for m in st.session_state.messages
+            ],
+            stream=True,
+        ):
+            full_response += response['choices'][0]['delta'].get('content', '')  # response.choices[0].delta.get("content", "")
             message_placeholder.markdown(full_response + "▌")
-            # print(token)
         message_placeholder.markdown(full_response)
     st.session_state.messages.append({"role": "assistant", "content": full_response})
