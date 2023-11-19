@@ -6,8 +6,8 @@ url = "http://localhost:40101/generate_stream"
 def get_generation_prompt(messages):
     chat_prompt = ""
     for i, message in enumerate(messages):
-        #if i > 0 and i < len(messages) - 3:
-        #    continue
+        if i > 0 and i < len(messages) - 3:
+            continue
         role = message["role"]
         content = message["content"]
         chat_prompt += f"<|{role}|>\n"
