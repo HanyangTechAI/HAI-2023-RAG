@@ -1,0 +1,39 @@
+version: '2.3'
+services:
+  llm-api:
+    container_name: llm_api
+    image: ghcr.io/huggingface/text-generation-inference:1.1.1
+    command: --model-id HuggingFaceH4/zephyr-7b-beta --dtype bfloat16
+    volumes:
+      - ./llm_cache:/data
+    ports:
+      - "40101:5000"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    networks:
+      - host
+
+  neural_search:
+    container_name: neural_search
+    build: neural_search
+    volumes:
+      - ./emb_cache:/root/.cache
+      - ./chroma:/chroma
+    ports:
+      - "40103:80"
+    runtime: nvidia
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+    networks:
+      - host
+    depends_on:
+      - embedding-api
+
+  hwp-converter:
+    container_name: hwp-converter
+    image: vkehfdl1/hwp-converter-api:1.0.0
+    ports:
+      - "40104:80"
+    networks:
+      - host
