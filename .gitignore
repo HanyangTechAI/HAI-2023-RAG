@@ -161,3 +161,6 @@ cython_debug/
 
 # Custom
 files
+chroma
+emb_cache
+llm_cache
