@@ -37,3 +37,13 @@ services:
       - "40104:80"
     networks:
       - host
+  
+  demo-page:
+    container_name: chat_demo
+    build: demo_page:1.1
+    networks:
+      - host
+    depends_on:
+      - llm-api
+      - neural_search
+      - hwp-converter
