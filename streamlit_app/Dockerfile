@@ -12,5 +12,4 @@ COPY ./src /app/src
 WORKDIR /app/
 RUN pip install -r requirements.txt
 
-EXPOSE 8080
-CMD ["streamlit", "run", "/app/src/app.py", "--server.port", "40201"]
+CMD ["streamlit", "run", "/app/src/app.py", "--server.port", "80"]
