@@ -6,7 +6,7 @@ from typing import List
 from dotenv import load_dotenv
 load_dotenv()
 
-url = os.environ("LLM_API_URL")
+url = os.environ["LLM_API_URL"]
 
 def get_rag_query(query: str, documents: List[str]):
     context = "\n\n".join(documents)
