@@ -20,6 +20,13 @@ def create(collection_name):
             data=json.dumps(data, ensure_ascii=False))
     return response.json()
 
+def delete(collection_name):
+    data = {"collection_name": collection_name}
+    response = search_api_session.post(f"{search_api_url}/delete",
+            headers=search_api_headers,
+            data=json.dumps(data, ensure_ascii=False))
+    return response.json()
+
 def index(collection_name, documents, metadatas):
     data = {
         "collection_name": collection_name,
