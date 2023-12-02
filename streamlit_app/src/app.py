@@ -88,7 +88,7 @@ if prompt := st.chat_input("How can I help you today?"):
         for chunk in generate(prompt):
             full_response += chunk[0]
             message_placeholder.markdown(full_response + "▌")
-        full_response = chunk[1]
+        full_response = full_response.rstrip("</s>")
         message_placeholder.markdown(full_response)
         
         reference_text = ""
