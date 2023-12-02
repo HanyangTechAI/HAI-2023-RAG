@@ -5,3 +5,4 @@ pypdf==3.17.1
 python-docx==1.1.0
 kss==4.5.4
 mecab-python==1.0.0
+python-dotenv==1.0.0
