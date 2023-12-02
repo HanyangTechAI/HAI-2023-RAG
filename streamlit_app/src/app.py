@@ -10,9 +10,9 @@ st.set_page_config(
 if "collection_name" not in st.session_state or st.session_state.collection_name == "":
     st.session_state.collection_name = "default"
 if "system_message" not in st.session_state:
-    st.session_state.system_message = "You are a chatbot that always answers with kindness and detail."
+    st.session_state.system_message = "You are a chatbot answering based on the information you are given. Please be friendly and detailed in your answers."
 
-st.title('🎈 HAI RAG demo')
+st.title('🎈 HAI RAG demo (DEV)')
 
 col0, col1 = st.columns([1, 1])
 
@@ -73,7 +73,9 @@ if prompt := st.chat_input("How can I help you today?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt, "reference":""})
     
-    search_results = search(st.session_state.collection_name, prompt, 1)
+    search_results = search(st.session_state.collection_name, prompt, 5)
+    with st.expander("Semantic Search results"):
+        st.write(search_results)
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
