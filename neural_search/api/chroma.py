@@ -18,9 +18,9 @@ emb_func = {
 
 def create_collection(collection_name: str, metadata: dict = None):
     if not metadata:
-        metadata = None
+        metadata = dict()
+    metadata["hnsw:space"] = "cosine"
     return client.get_or_create_collection(name=collection_name,
-                                        # embedding_function=emb_func,
                                         metadata=metadata)
     
 def check_collection(collection_name: str):
