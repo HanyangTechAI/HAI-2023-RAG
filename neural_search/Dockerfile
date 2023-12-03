@@ -10,7 +10,8 @@ ADD requirements.txt /app/
 RUN pip3 install -r requirements.txt
 
 ENV CHROMADB_PATH "/chroma"
-ENV EMBEDDING_MODEL "sentence-transformers/paraphrase-multilingual-mpnet-base-v2"
+ENV EMBEDDING_MODEL_EN "sentence-transformers/multi-qa-mpnet-base-cos-v1"
+ENV EMBEDDING_MODEL_KO "Huffon/sentence-klue-roberta-base"
 
 # Move required resources                     
 COPY ./api /app/api/

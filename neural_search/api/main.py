@@ -67,10 +67,11 @@ async def indexing(request: IndexingRequest) -> JSONResponse:
 
 @app.get("/search/{collection_name}")
 async def search(collection_name: str = "text",
+                 lang: str = "en",
                  query: str = "Hi, there!",
                  top_k: int = 2) -> JSONResponse:
     try:
-        result = search_documents(collection_name, query, top_k)
+        result = search_documents(collection_name, lang, query, top_k)
         return JSONResponse(status_code=200, content={
             "status": "success",
             "result": result
