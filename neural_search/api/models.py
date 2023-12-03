@@ -17,4 +17,5 @@ class Document(BaseModel):
 
 class IndexingRequest(BaseModel):
     collection_name: str = "test"
+    lang: str = "en"
     data: List[Document]
