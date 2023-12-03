@@ -74,7 +74,7 @@ with col1.form(_("Upload File"), clear_on_submit=False):
     )
     uploaded_file = st.file_uploader(
         _("Uplode files"),
-        ["pdf", "docx", "pptx", "hwp", "txt"],
+        ["pdf", "docx", "pptx", "hwp", "txt", "xlsx"],
         accept_multiple_files=False,
         label_visibility="hidden",
     )

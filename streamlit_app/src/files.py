@@ -1,17 +1,29 @@
-import re
-
-import docx
 import requests
-from kss import split_sentences
 from langchain.document_loaders import PyPDFLoader
 from pptx import Presentation
+import docx
+import re
+from kss import split_sentences
+import pandas as pd
+from trafilatura import fetch_url, extract
+
+EMOJI = re.compile("["
+        u"\U00002700-\U000027BF"  # Dingbats
+        u"\U0001F600-\U0001F64F"  # Emoticons
+        u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+        u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+        u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+        u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+        u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+        u"\U00010000-\U0010ffff"
+                      "]+", re.UNICODE)
+
 
 
 def normalize_text(text):
-    text = re.sub(r" +", " ", text)
-    text = re.sub(r"\n+", "\n", text)
+    text = re.sub(r' +', ' ', text)
+    text = re.sub(r'\n+', '\n', text)
     return text
-
 
 def chunk_text(paragraphs, chunk_size: int = 500):
     chunks = []
@@ -29,32 +41,29 @@ def chunk_text(paragraphs, chunk_size: int = 500):
         chunks.append(text)
     return chunks
 
-
 def convert_hwp_to_txt(file_path):
     # URL for the POST request
     url = "http://localhost:40104/upload?option=all"
 
     # Payload for the request
-    files = {"file": open(file_path, "rb")}
-    data = {"option": "all"}
+    files = {'file': open(file_path, 'rb')}
+    data = {'option': 'all'}
 
     # Sending the POST request
     response = requests.post(url, files=files, data=data)
-    response.encoding = "utf-8"
+    response.encoding = 'utf-8'
     # Output the response
     paragraphs = split_sentences(response.text, backend="mecab")
     chunks = chunk_text(paragraphs)
-
+    
     return chunks
-
 
 def convert_pdf_to_txt(file_path):
     loader = PyPDFLoader(file_path)
-    pages = loader.load()
+    pages  = loader.load()
     paragraphs = [page.page_content for page in pages]
     chunks = chunk_text(paragraphs)
     return chunks
-
 
 def convert_docx_to_txt(file_path):
     doc = docx.Document(file_path)
@@ -62,11 +71,10 @@ def convert_docx_to_txt(file_path):
     chunks = chunk_text(paragraphs)
     return chunks
 
-
 def convert_pptx_to_txt(file_path):
     prs = Presentation(file_path)
     chunks = []
-
+    
     for i, slide in enumerate(prs.slides):
         paragraphs = []
         font_sizes = []
@@ -78,19 +86,19 @@ def convert_pptx_to_txt(file_path):
                 para_text = paragraph.text.strip()
                 if len(para_text) < 2:
                     continue
-
+                
                 font_size = 0
                 for run in paragraph.runs:
                     size = run.font.size
                     size_pt = 0 if size is None else size.pt
                     if size_pt > font_size:
                         font_size = size_pt
-
+                        
                 paragraphs.append(para_text)
                 font_sizes.append(font_size)
         if len(paragraphs) == 0:
             continue
-
+        
         title = None
         texts = []
         max_font_size = max(font_sizes)
@@ -101,18 +109,45 @@ def convert_pptx_to_txt(file_path):
                 texts.append(para_text)
         if len(texts) == 0:
             continue
-
-        texts = "\n".join(texts)
+        
+        texts = '\n'.join(texts)
         texts = f"Title: {title}\n{texts}"
         chunks.append(texts)
-
+        
     return chunks
 
+def convert_web_to_txt(link):
+    ret = ''
+    
+    html = fetch_url(link)
+    if(html is None):
+        pass
+    else:
+        ret = extract(html, include_images=True)
+        ret = EMOJI.sub(r'', ret)
+
+    return ret
+    
+
+def convert_xlsx_to_txt(file_path):
+    data = pd.read_excel(file_path)
+
+    num_row = data.shape[0]
+    columns = data.columns
+
+    ret = ''
+    for idx in range(num_row):
+        tmp = f"Information {idx}) "
+        for column in columns:
+            tmp += column + ': ' + data.loc[idx, column] + ', '
+        ret += tmp[:-2] + '\n'
+    
+    return ret
 
 def convert_file_to_txt(file_path, file_type=None):
     try:
         if file_type is None:
-            file_type = file_path.strip().split(".")[-1]
+            file_type = file_path.strip().split('.')[-1]
         if file_type == "hwp":
             result = convert_hwp_to_txt(file_path)
         elif file_type == "pdf":
@@ -121,6 +156,10 @@ def convert_file_to_txt(file_path, file_type=None):
             result = convert_docx_to_txt(file_path)
         elif file_type == "pptx":
             result = convert_pptx_to_txt(file_path)
+        elif file_type == "xlsx":
+            result = convert_xlsx_to_txt(file_path)
+        elif file_type == "web":
+            result = convert_web_to_txt(file_path)
         else:
             with open(file_path, "r", encoding="utf-8") as f:
                 paragraphs = f.readlines()
@@ -133,16 +172,11 @@ def convert_file_to_txt(file_path, file_type=None):
 
 if __name__ == "__main__":
     import glob, json
-
+    
     files = glob.glob("files/*")
     print(files)
-
+    
     for filepath in files:
         print(filepath)
         text = convert_file_to_txt(filepath)
-        json.dump(
-            {filepath: text},
-            open((filepath + ".json").replace("files", "json"), "w"),
-            ensure_ascii=False,
-            indent=2,
-        )
+        json.dump({filepath:text}, open((filepath+".json").replace("files", "json"), "w"), ensure_ascii=False, indent=2)
