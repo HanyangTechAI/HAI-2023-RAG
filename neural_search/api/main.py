@@ -60,7 +60,7 @@ async def delete(request: DeleteRequest) -> JSONResponse:
 async def indexing(request: IndexingRequest) -> JSONResponse:
     # 문서 저장 로직
     try:
-        index_documents(request.collection_name, request.data)
+        index_documents(request.collection_name, request.lang, request.data)
         return JSONResponse(status_code=200, content={"status": "success"})
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
