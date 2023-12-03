@@ -1,9 +1,12 @@
 import os
+
 import chromadb
 from chromadb.utils.embedding_functions import SentenceTransformerEmbeddingFunction
+
 from api.utils import sha256
 
 client = chromadb.PersistentClient(path=os.environ["CHROMADB_PATH"])
+
 
 emb_func = {
     "en": SentenceTransformerEmbeddingFunction(
@@ -16,15 +19,17 @@ emb_func = {
     ),
 }
 
+
 def create_collection(collection_name: str, metadata: dict = None):
     if not metadata:
         metadata = dict()
     metadata["hnsw:space"] = "cosine"
     return client.get_or_create_collection(name=collection_name,
                                         metadata=metadata)
-    
+
 def check_collection(collection_name: str):
     return client.get_collection(collection_name)
+
 
 def delete_collection(collection_name: str):
     return client.delete_collection(collection_name)
@@ -36,6 +41,7 @@ def index_documents(collection_name: str, lang: str, document: dict):
         if not metadata:
             metadatas[i] = None
     ids = [sha256(text) for text in texts]
+
     
     collection = client.get_collection(collection_name,
                                        embedding_function=emb_func[lang])

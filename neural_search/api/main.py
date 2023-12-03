@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
+
 from api.chroma import (
     create_collection,
     check_collection,
@@ -15,9 +16,11 @@ from api.models import (
 
 app = FastAPI()
 
+
 @app.get("/health")
 async def health() -> JSONResponse:
     return "OK"
+
 
 @app.post("/create")
 async def create(request: CreateRequest) -> JSONResponse:
@@ -28,6 +31,7 @@ async def create(request: CreateRequest) -> JSONResponse:
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
 
+
 @app.get("/check/{collection_name}")
 async def check(collection_name: str = "test") -> JSONResponse:
     # ChromeDB에서 컬렉션 존재 여부를 확인하는 로직
@@ -37,15 +41,16 @@ async def check(collection_name: str = "test") -> JSONResponse:
             status_code=200,
             content={
                 "status": "success",
-                "result":{
+                "result": {
                     "name": collection.name,
                     "id": collection.id.hex,
                     "metadata": collection.metadata,
-                }
-            }
+                },
+            },
         )
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
+
 
 @app.delete("/delete")
 async def delete(request: DeleteRequest) -> JSONResponse:
@@ -56,6 +61,7 @@ async def delete(request: DeleteRequest) -> JSONResponse:
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
 
+
 @app.post("/indexing")
 async def indexing(request: IndexingRequest) -> JSONResponse:
     # 문서 저장 로직
@@ -64,6 +70,7 @@ async def indexing(request: IndexingRequest) -> JSONResponse:
         return JSONResponse(status_code=200, content={"status": "success"})
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
+
 
 @app.get("/search/{collection_name}")
 async def search(collection_name: str = "text",
