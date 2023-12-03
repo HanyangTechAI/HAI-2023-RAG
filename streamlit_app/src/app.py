@@ -33,7 +33,8 @@ with col0.form("Settings", clear_on_submit=False):
 with col1.form("Upload File", clear_on_submit=False):
     st.subheader("Upload documents for AI to reference")
     st.markdown(
-        "- Once the file is entered, it is automatically split into pages and stored in the DB.\n- When you type a question, it will answer based on the most relevant pages."
+        "- Once the file is entered, it is automatically split into pages and stored in the DB.\n- When you type a "
+        "question, it will answer based on the most relevant pages."
     )
     uploaded_file = st.file_uploader(
         "Uplode files",
@@ -71,7 +72,8 @@ for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             if message.get("reference"):
-                st.markdown(message["reference"])
+                with st.expander("References"):
+                    st.markdown(message["reference"])
 
 # React to user input
 if prompt := st.chat_input("How can I help you today?"):
@@ -100,15 +102,15 @@ if prompt := st.chat_input("How can I help you today?"):
 
         reference_text = ""
         if search_results:
-            reference_text += "---\n\n"
-            for i, sr in enumerate(search_results):
-                sr_text = f"#### Reference {i + 1}\n"
-                for k, v in sr["metadata"].items():
-                    sr_text += f"- **{k}**: {v}\n"
-                sr_text += f"```text\n{sr['document']}``\n"
-                reference_text += sr_text
-
-            st.markdown(reference_text)
+            with st.expander("References"):
+                reference_text += "---\n\n"
+                for i, sr in enumerate(search_results):
+                    sr_text = f"##### Reference {i + 1}\n"
+                    for k, v in sr["metadata"].items():
+                        sr_text += f"- **{k}**: {v}\n"
+                    sr_text += f"```text\n{sr['document']}\n```\n"
+                    reference_text += sr_text
+                st.markdown(reference_text)
 
     st.session_state.messages.append(
         {"role": "assistant", "content": full_response, "reference": reference_text}
