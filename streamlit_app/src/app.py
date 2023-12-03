@@ -1,3 +1,4 @@
+import os
 import gettext
 
 import streamlit as st
@@ -8,7 +9,7 @@ from search import store_file_to_db, search, delete
 languages = ["en", "ko"]
 localizator = gettext.translation(
     "base",
-    localedir="locales",
+    localedir=os.path.join(os.path.dirname(__file__), "locales"),
     languages=[st.session_state.language if "language" in st.session_state else "en"],
 )
 localizator.install()
