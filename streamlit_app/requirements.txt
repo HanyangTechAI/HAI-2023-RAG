@@ -6,3 +6,4 @@ python-docx==1.1.0
 kss==4.5.4
 mecab-python==1.0.0
 langchain==0.0.339
+trafilatura==1.6.3
