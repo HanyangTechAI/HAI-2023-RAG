@@ -37,3 +37,17 @@ services:
       - "40104:80"
     networks:
       - host
+
+  streamlit_app:
+    container_name: streamlit_app
+    build: streamlit_app
+    volumes:
+      - ./files:/files
+    ports:
+      - "40201:80"
+    networks:
+      - host
+    depends_on:
+      - llm-api
+      - neural_search
+      - hwp-converter
