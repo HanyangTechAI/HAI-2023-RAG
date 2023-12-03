@@ -1,7 +1,7 @@
 import streamlit as st
 
 from llm import get_generation_prompt, generate
-from search import store_file_to_db, search
+from search import store_file_to_db, search, delete
 
 st.set_page_config(
     page_title="HAI ChatBot Demo",
@@ -14,6 +14,8 @@ if "system_message" not in st.session_state:
     st.session_state.system_message = (
         "You are a chatbot that always answers with kindness and detail."
     )
+if "top_k" not in st.session_state:
+    st.session_state.top_k = 3
 
 st.title("🎈 HAI RAG demo")
 
@@ -27,8 +29,18 @@ with col0.form("Settings", clear_on_submit=False):
     st.text_area(
         "Input system messages below:", key="system_message", label_visibility="visible"
     )
-    st.form_submit_button("Clear DB")
     top_k = st.slider("Select the number of references to use", 0, 10, 3, key="top_k")
+    clear_db_button = st.form_submit_button("Clear DB")
+
+if clear_db_button:
+    try:
+        result = delete(collection_name)
+        if result:
+            st.success(f"Collection {collection_name} deleted")
+        else:
+            st.warning(f"Collection {collection_name} delete failed.")
+    except:
+        st.error(f"Error occured while deleting collection {collection_name}.")
 
 with col1.form("Upload File", clear_on_submit=False):
     st.subheader("Upload documents for AI to reference")

@@ -39,6 +39,16 @@ def index(collection_name, documents, metadatas):
     return response.json()
 
 
+def delete(collection_name):
+    data = {"collection_name": collection_name}
+    response = search_api_session.delete(
+        f"{search_api_url}/delete",
+        headers=search_api_headers,
+        data=json.dumps(data, ensure_ascii=False),
+    )
+    return response.json()
+
+
 def search(collection_name, query, top_k: int = 5):
     encoded_query = quote(query, encoding="utf-8")
     response = search_api_session.get(
