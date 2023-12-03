@@ -82,7 +82,7 @@ with col1.form(_("Upload File"), clear_on_submit=False):
 
 if submit_button and uploaded_file:
     try:
-        result = store_file_to_db(collection_name, uploaded_file)
+        result = store_file_to_db(collection_name, uploaded_file, language)
         if result:
             st.success(_("File {} upload success").format(uploaded_file.name))
         else:
@@ -120,7 +120,7 @@ if prompt := st.chat_input(_("How can I help you today?")):
         {"role": "user", "content": prompt, "reference": ""}
     )
 
-    search_results = search(st.session_state.collection_name, prompt, top_k)
+    search_results = search(st.session_state.collection_name, prompt, language, top_k)
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):

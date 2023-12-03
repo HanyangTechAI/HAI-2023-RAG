@@ -1,6 +1,5 @@
 import json
 import os
-from urllib.parse import quote
 
 import requests
 
@@ -23,9 +22,10 @@ def create(collection_name):
     return response.json()
 
 
-def index(collection_name, documents, metadatas):
+def index(collection_name, documents, metadatas, lang: str = "en"):
     data = {
         "collection_name": collection_name,
+        "lang": lang,
         "data": [
             {"document": document, "metadata": metadata}
             for document, metadata in zip(documents, metadatas)
@@ -49,11 +49,15 @@ def delete(collection_name):
     return response.json()
 
 
-def search(collection_name, query, top_k: int = 5):
-    encoded_query = quote(query, encoding="utf-8")
+def search(collection_name, query, lang: str = "en", top_k: int = 5):
     response = search_api_session.get(
-        f"{search_api_url}/search/{collection_name}?query={encoded_query}&top_k={top_k}",
+        f"{search_api_url}/search/{collection_name}",
         headers=search_api_headers,
+        params={
+            "query": query,
+            "lang": lang,
+            "top_k": top_k,
+        }
     )
     if response.status_code == 500:
         return []
@@ -76,7 +80,7 @@ def search(collection_name, query, top_k: int = 5):
     return data
 
 
-def store_file_to_db(collection_name, uploaded_file):
+def store_file_to_db(collection_name, uploaded_file, lang: str = "en"):
     filename = uploaded_file.name
     with open(f"files/{filename}", "wb") as f:
         f.write(uploaded_file.read())
@@ -92,7 +96,7 @@ def store_file_to_db(collection_name, uploaded_file):
         for i in range(len(documents))
     ]
 
-    index(collection_name, documents, metadatas)
+    index(collection_name, documents, metadatas, lang)
 
     return True
 
