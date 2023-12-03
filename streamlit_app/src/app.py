@@ -28,6 +28,7 @@ with col0.form("Settings", clear_on_submit=False):
         "Input system messages below:", key="system_message", label_visibility="visible"
     )
     st.form_submit_button("Clear DB")
+    top_k = st.slider("Select the number of references to use", 0, 10, 3, key="top_k")
 
 with col1.form("Upload File", clear_on_submit=False):
     st.subheader("Upload documents for AI to reference")
@@ -81,7 +82,7 @@ if prompt := st.chat_input("How can I help you today?"):
         {"role": "user", "content": prompt, "reference": ""}
     )
 
-    search_results = search(st.session_state.collection_name, prompt, 1)
+    search_results = search(st.session_state.collection_name, prompt, top_k)
 
     # Display assistant response in chat message container
     with st.chat_message("assistant"):
