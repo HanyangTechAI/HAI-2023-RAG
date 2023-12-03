@@ -3,9 +3,10 @@ import os
 
 import requests
 
-from files import convert_file_to_txt
+from files import convert_file_to_txt, convert_webpage_to_txt
 
 os.makedirs("files", exist_ok=True)
+os.makedirs("webpages", exist_ok=True)
 
 search_api_url = "http://localhost:40103"
 search_api_session = requests.session()
@@ -91,6 +92,28 @@ def store_file_to_db(collection_name, uploaded_file, lang: str = "en"):
     metadatas = [
         {
             "file_name": filename,
+            "page": i + 1,
+        }
+        for i in range(len(documents))
+    ]
+
+    index(collection_name, documents, metadatas, lang)
+
+    return True
+
+def store_webpage_to_db(collection_name, url, lang: str = "en"):
+    with open(f"webpages/url_{collection_name}.log", "a") as f:
+        f.write(f"{url}\n")
+
+    create(collection_name)
+
+    documents = convert_webpage_to_txt(url)
+    if not documents:
+        return False
+    
+    metadatas = [
+        {
+            "url": url,
             "page": i + 1,
         }
         for i in range(len(documents))

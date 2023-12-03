@@ -41,6 +41,10 @@ msgstr ""
 msgid "Currently logged in `{}`"
 msgstr ""
 
+#: app.py:40
+msgid "Settings for semantic search"
+msgstr ""
+
 #: app.py:41
 msgid "Select the language of the model"
 msgstr ""
@@ -65,6 +69,10 @@ msgstr ""
 msgid "Settings updated"
 msgstr ""
 
+#: app.py:57
+msgid "Clear Chat History"
+msgstr ""
+
 #: app.py:63
 msgid "Collection {} delete success"
 msgstr ""
@@ -87,7 +95,7 @@ msgstr ""
 
 #: app.py:75
 msgid ""
-"- Once the file is entered, it is automatically split into pages and stored "
+"- Once the file or webpage is entered, it is automatically split into pages and stored "
 "in the DB.\n"
 "- When you type a question, it will answer based on the most relevant pages."
 msgstr ""

@@ -29,69 +29,83 @@ system_message = _("You are a chatbot that always answers with kindness and deta
 rag_message = _("Use the above information to answer the following query below.")
 
 st.title(_("🎈 HAI RAG demo"))
+st.subheader(_("Currently logged in `{}`").format(st.session_state.collection_name))
 
 col0, col1 = st.columns([1, 1])
+info_cont = st.container()
 
 with col0.form(_("Settings"), clear_on_submit=False):
-    st.subheader(_("Currently logged in `{}`").format(st.session_state.collection_name))
-    language = st.selectbox(
+    st.subheader(_("Settings for semantic search"))
+    col_lang, col_name = st.columns([1, 1])
+    language = col_lang.selectbox(
         _("Select the language of the model"),
         languages,
         index=languages.index(st.session_state.language),
         key="language",
     )
-    collection_name = st.text_input(
+    collection_name = col_name.text_input(
         label=_("Enter the name of database to use."), key="collection_name"
     )
     top_k = st.slider(
         _("Select the number of references to use"), 0, 10, 3, key="top_k"
     )
 
-    update_setting_button = st.form_submit_button(_("Update"))
-    clear_db_button = st.form_submit_button(_("Clear DB"))
+    col_update, col_delete, col_clear = st.columns([1, 1, 1])
+    update_setting_button = col_update.form_submit_button(_("Update"))
+    clear_db_button = col_delete.form_submit_button(_("Clear DB"))
+    clear_history_button = col_clear.form_submit_button(_("Clear Chat History"))
+    
+    if update_setting_button:
+        info_cont.success(_("Settings updated"))
 
-if update_setting_button and not clear_db_button:
-    st.success(_("Settings updated"))
-
-if clear_db_button and not update_setting_button:
-    try:
-        result = delete(collection_name)
-        if result:
-            st.success(_("Collection {} delete success").format(collection_name))
-        else:
-            st.warning(_("Collection {} delete failed.").format(collection_name))
-    except:
-        st.error(
-            _("Error occured while deleting collection {}.").format(collection_name)
-        )
+    if clear_db_button:
+        try:
+            result = delete(collection_name)
+            if result:
+                info_cont.success(_("Collection {} delete success").format(collection_name))
+            else:
+                info_cont.warning(_("Collection {} delete failed.").format(collection_name))
+        except:
+            info_cont.error(
+                _("Error occured while deleting collection {}.").format(collection_name)
+            )
+            
+    if clear_history_button:
+        st.session_state.messages = [
+            {
+                "role": "system",
+                "content": system_message,
+                "reference": "",
+            }
+        ]
 
 with col1.form(_("Upload File"), clear_on_submit=False):
     st.subheader(_("Upload documents for AI to reference"))
     st.markdown(
         _(
-            "- Once the file is entered, it is automatically split into pages and stored in the DB.\n- When you type a "
+            "- Once the file or webpage is entered, it is automatically split into pages and stored in the DB.\n- When you type a "
             "question, it will answer based on the most relevant pages."
         )
     )
     uploaded_file = st.file_uploader(
         _("Uplode files"),
-        ["pdf", "docx", "xlsx", "pptx", "hwp", "txt"],
+        ["txt", "pdf", "docx", "xlsx", "pptx", "hwp"],
         accept_multiple_files=False,
         label_visibility="hidden",
     )
     submit_button = st.form_submit_button(_("Submit"))
 
-if submit_button and uploaded_file:
-    try:
-        result = store_file_to_db(collection_name, uploaded_file, language)
-        if result:
-            st.success(_("File {} upload success").format(uploaded_file.name))
-        else:
-            st.warning(_("File {} upload failed.").format(uploaded_file.name))
-    except:
-        st.error(_("Error occured while uploading file {}.").format(uploaded_file.name))
+    if submit_button and uploaded_file:
+        try:
+            result = store_file_to_db(collection_name, uploaded_file, language)
+            if result:
+                info_cont.success(_("File {} upload success").format(uploaded_file.name))
+            else:
+                info_cont.warning(_("File {} upload failed.").format(uploaded_file.name))
+        except:
+            info_cont.error(_("Error occured while uploading file {}.").format(uploaded_file.name))
 
-# Initialize chat histor
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
