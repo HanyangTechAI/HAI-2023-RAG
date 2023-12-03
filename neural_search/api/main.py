@@ -66,20 +66,22 @@ async def delete(request: DeleteRequest) -> JSONResponse:
 async def indexing(request: IndexingRequest) -> JSONResponse:
     # 문서 저장 로직
     try:
-        index_documents(request.collection_name, request.data)
+        index_documents(request.collection_name, request.lang, request.data)
         return JSONResponse(status_code=200, content={"status": "success"})
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
 
 
 @app.get("/search/{collection_name}")
-async def search(
-    collection_name: str = "text", query: str = "Hi, there!", top_k: int = 2
-) -> JSONResponse:
+async def search(collection_name: str = "text",
+                 lang: str = "en",
+                 query: str = "Hi, there!",
+                 top_k: int = 2) -> JSONResponse:
     try:
-        result = search_documents(collection_name, query, top_k)
-        return JSONResponse(
-            status_code=200, content={"status": "success", "result": result}
-        )
+        result = search_documents(collection_name, lang, query, top_k)
+        return JSONResponse(status_code=200, content={
+            "status": "success",
+            "result": result
+        })
     except:
         return JSONResponse(status_code=500, content={"status": "failure"})
