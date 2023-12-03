@@ -10,7 +10,7 @@ def get_rag_query(query, documents, prompt=""):
     query = f"""{context}
 
 {prompt}
-Query: {query}"""
+{query}"""
     return query
 
 

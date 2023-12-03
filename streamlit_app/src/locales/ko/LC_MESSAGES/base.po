@@ -22,12 +22,12 @@ msgid "HAI ChatBot Demo"
 msgstr "HAI 챗봇 데모"
 
 #: app.py:28
-msgid "You are a chatbot that always answers with kindness and detail."
-msgstr "당신은 항상 친절하고 상세하게 답변하는 챗봇입니다."
+msgid "You are a chatbot that answers questions accurately and concisely based on the information you are given."
+msgstr "당신은 주어진 정보를 바탕으로 질문에 대해 정확하고 간결하게 답변하는 챗봇입니다."
 
 #: app.py:31
-msgid "Use the above information to answer the following query below."
-msgstr "위 정보를 사용하여 아래 질문에 답변하세요."
+msgid "Use the above information to answer the following query below:"
+msgstr "위 정보를 참조하여 아래 질문에 답변하세요:"
 
 #: app.py:34
 msgid "🎈 HAI RAG demo"
@@ -91,7 +91,7 @@ msgstr "파일 업로드"
 
 #: app.py:72
 msgid "Upload documents for AI to reference"
-msgstr "AI가 참조할 문서를 업로드하세요."
+msgstr "AI가 참조할 자료 업로드"
 
 #: app.py:75
 msgid ""
@@ -99,7 +99,7 @@ msgid ""
 "in the DB.\n"
 "- When you type a question, it will answer based on the most relevant pages."
 msgstr ""
-"- 파일이나 웹페이지를 입력하면 자동으로 페이지로 분할되어 DB에 저장됩니다.\n"
+"- 파일이나 웹페이지를 추가하면 자동으로 페이지로 분할되어 DB에 저장됩니다.\n"
 "- 질문을 입력하면 가장 관련성이 높은 페이지를 기반으로 답변합니다."
 
 #: app.py:80
@@ -108,7 +108,7 @@ msgstr ""
 
 #: app.py:85
 msgid "Submit"
-msgstr "파일 업로드"
+msgstr "업로드"
 
 #: app.py:91
 msgid "File {} upload success"
@@ -122,9 +122,25 @@ msgstr "{} 파일 업로드에 실패했습니다."
 msgid "Error occured while uploading file {}."
 msgstr "{} 파일 업로드 중 오류가 발생했습니다."
 
+#: app.py:101
+msgid "Enter the URL of webpage to use"
+msgstr "사용할 웹페이지의 URL 입력"
+
+#: app.py:102
+msgid "Webpage {} upload success"
+msgstr "{} 페이지 업로드를 성공했습니다."
+
+#: app.py:103
+msgid "Webpage {} upload failed."
+msgstr "{} 페이지 업로드에 실패했습니다."
+
+#: app.py:104
+msgid "Error occured while uploading Webpage {}."
+msgstr "{} 페이지 업로드 중 오류가 발생했습니다."
+
 #: app.py:119
 msgid "How can I help you today?"
-msgstr "오늘은 무엇을 도와드릴까요?"
+msgstr "무엇을 도와드릴까요?"
 
 #: app.py:145
 msgid "References"
