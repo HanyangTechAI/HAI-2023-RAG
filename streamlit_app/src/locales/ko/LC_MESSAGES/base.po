@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-03 16:02+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app.py:18
+msgid "HAI ChatBot Demo"
+msgstr "HAI 챗봇 데모"
+
+#: app.py:28
+msgid "You are a chatbot that always answers with kindness and detail."
+msgstr "당신은 항상 친절하고 상세하게 답변하는 챗봇입니다."
+
+#: app.py:31
+msgid "Use the above information to answer the following query below."
+msgstr "위 정보를 사용하여 아래 질문에 답변하세요."
+
+#: app.py:34
+msgid "🎈 HAI RAG demo"
+msgstr "🎈 HAI RAG 데모"
+
+#: app.py:38
+msgid "Settings"
+msgstr ""
+
+#: app.py:39
+msgid "Currently logged in `{}`"
+msgstr "현재 `{}`에 로그인되어 있습니다."
+
+#: app.py:41
+msgid "Select the language of the model"
+msgstr "모델의 언어를 선택하세요."
+
+#: app.py:47
+msgid "Enter the name of database to use."
+msgstr "사용할 데이터베이스의 이름을 입력하세요."
+
+#: app.py:50
+msgid "Select the number of references to use"
+msgstr "사용할 참조의 수를 선택하세요."
+
+#: app.py:53
+msgid "Update"
+msgstr ""
+
+#: app.py:54
+msgid "Clear DB"
+msgstr "DB 초기화"
+
+#: app.py:57
+msgid "Settings updated"
+msgstr "설정이 업데이트되었습니다."
+
+#: app.py:63
+msgid "Collection {} delete success"
+msgstr ""
+
+#: app.py:65
+msgid "Collection {} delete failed."
+msgstr ""
+
+#: app.py:68
+msgid "Error occured while deleting collection {}."
+msgstr ""
+
+#: app.py:71
+msgid "Upload File"
+msgstr ""
+
+#: app.py:72
+msgid "Upload documents for AI to reference"
+msgstr "AI가 참조할 문서를 업로드하세요."
+
+#: app.py:75
+msgid ""
+"- Once the file is entered, it is automatically split into pages and stored "
+"in the DB.\n"
+"- When you type a question, it will answer based on the most relevant pages."
+msgstr ""
+"- 파일을 입력하면 자동으로 페이지로 분할되어 DB에 저장됩니다.\n"
+"- 질문을 입력하면 가장 관련성이 높은 페이지를 기반으로 답변합니다."
+
+#: app.py:80
+msgid "Uplode files"
+msgstr ""
+
+#: app.py:85
+msgid "Submit"
+msgstr "제출"
+
+#: app.py:91
+msgid "File {} upload success"
+msgstr "{} 파일 업로드를 성공했습니다."
+
+#: app.py:93
+msgid "File {} upload failed."
+msgstr "{} 파일 업로드에 실패했습니다."
+
+#: app.py:95
+msgid "Error occured while uploading file {}."
+msgstr "{} 파일 업로드 중 오류가 발생했습니다."
+
+#: app.py:119
+msgid "How can I help you today?"
+msgstr "오늘은 어떻게 도와드릴까요?"
+
+#: app.py:145
+msgid "References"
+msgstr ""

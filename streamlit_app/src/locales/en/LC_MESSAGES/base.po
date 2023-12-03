@@ -1,0 +1,121 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-12-03 16:02+0900\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: app.py:18
+msgid "HAI ChatBot Demo"
+msgstr ""
+
+#: app.py:28
+msgid "You are a chatbot that always answers with kindness and detail."
+msgstr ""
+
+#: app.py:31
+msgid "Use the above information to answer the following query below."
+msgstr ""
+
+#: app.py:34
+msgid "🎈 HAI RAG demo"
+msgstr ""
+
+#: app.py:38
+msgid "Settings"
+msgstr ""
+
+#: app.py:39
+msgid "Currently logged in `{}`"
+msgstr ""
+
+#: app.py:41
+msgid "Select the language of the model"
+msgstr ""
+
+#: app.py:47
+msgid "Enter the name of database to use."
+msgstr ""
+
+#: app.py:50
+msgid "Select the number of references to use"
+msgstr ""
+
+#: app.py:53
+msgid "Update"
+msgstr ""
+
+#: app.py:54
+msgid "Clear DB"
+msgstr ""
+
+#: app.py:57
+msgid "Settings updated"
+msgstr ""
+
+#: app.py:63
+msgid "Collection {} delete success"
+msgstr ""
+
+#: app.py:65
+msgid "Collection {} delete failed."
+msgstr ""
+
+#: app.py:68
+msgid "Error occured while deleting collection {}."
+msgstr ""
+
+#: app.py:71
+msgid "Upload File"
+msgstr ""
+
+#: app.py:72
+msgid "Upload documents for AI to reference"
+msgstr ""
+
+#: app.py:75
+msgid ""
+"- Once the file is entered, it is automatically split into pages and stored "
+"in the DB.\n"
+"- When you type a question, it will answer based on the most relevant pages."
+msgstr ""
+
+#: app.py:80
+msgid "Uplode files"
+msgstr ""
+
+#: app.py:85
+msgid "Submit"
+msgstr ""
+
+#: app.py:91
+msgid "File {} upload success"
+msgstr ""
+
+#: app.py:93
+msgid "File {} upload failed."
+msgstr ""
+
+#: app.py:95
+msgid "Error occured while uploading file {}."
+msgstr ""
+
+#: app.py:119
+msgid "How can I help you today?"
+msgstr ""
+
+#: app.py:145
+msgid "References"
+msgstr ""

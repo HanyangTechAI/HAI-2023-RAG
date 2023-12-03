@@ -5,16 +5,16 @@ import requests
 url = "http://localhost:40101/generate_stream"
 
 
-def get_rag_query(query, documents):
+def get_rag_query(query, documents, prompt=""):
     context = "\n\n".join(documents)
     query = f"""{context}
-    
-Use the above information to answer the following query below.
+
+{prompt}
 Query: {query}"""
     return query
 
 
-def get_generation_prompt(messages, search_results=[]):
+def get_generation_prompt(messages, search_results=[], rag_message=""):
     chat_prompt = ""
     documents = [item["document"] for item in search_results]
     for i, message in enumerate(messages):
@@ -24,7 +24,7 @@ def get_generation_prompt(messages, search_results=[]):
         content = message["content"]
 
         if i == len(messages) - 1:
-            content = get_rag_query(content, documents)
+            content = get_rag_query(content, documents, rag_message)
         chat_prompt += f"<|{role}|>\n"
         chat_prompt += f"{content}</s> \n"
 
