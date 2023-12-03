@@ -4,6 +4,21 @@ from pptx import Presentation
 import docx
 import re
 from kss import split_sentences
+import pandas as pd
+from trafilatura import fetch_url, extract
+
+EMOJI = re.compile("["
+        u"\U00002700-\U000027BF"  # Dingbats
+        u"\U0001F600-\U0001F64F"  # Emoticons
+        u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+        u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+        u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+        u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+        u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+        u"\U00010000-\U0010ffff"
+                      "]+", re.UNICODE)
+
+
 
 def normalize_text(text):
     text = re.sub(r' +', ' ', text)
@@ -101,6 +116,34 @@ def convert_pptx_to_txt(file_path):
         
     return chunks
 
+def convert_web_to_txt(link):
+    ret = ''
+    
+    html = fetch_url(link)
+    if(html is None):
+        pass
+    else:
+        ret = extract(html, include_images=True)
+        ret = EMOJI.sub(r'', ret)
+
+    return ret
+    
+
+def convert_xlsx_to_txt(file_path):
+    data = pd.read_excel(file_path)
+
+    num_row = data.shape[0]
+    columns = data.columns
+
+    ret = ''
+    for idx in range(num_row):
+        tmp = f"Information {idx}) "
+        for column in columns:
+            tmp += column + ': ' + data.loc[idx, column] + ', '
+        ret += tmp[:-2] + '\n'
+    
+    return ret
+
 def convert_file_to_txt(file_path, file_type=None):
     try:
         if file_type is None:
@@ -113,6 +156,10 @@ def convert_file_to_txt(file_path, file_type=None):
             result = convert_docx_to_txt(file_path)
         elif file_type == "pptx":
             result = convert_pptx_to_txt(file_path)
+        elif file_type == "xlsx":
+            result = convert_xlsx_to_txt(file_path)
+        elif file_type == "web":
+            result = convert_web_to_txt(file_path)
         else:
             with open(file_path, "r", encoding="utf-8") as f:
                 paragraphs = f.readlines()
