@@ -6,10 +6,15 @@ url = "http://localhost:40101/generate_stream"
 
 
 def get_rag_query(query, documents, prompt=""):
-    context = "\n\n".join(documents)
-    query = f"""{context}
+    if documents is not None and len(documents) > 0:
+        context = "\n----\n".join(documents)
+    else:
+        context = "No information provided"
+        
+    query = f"""\
+{context}
 
-{prompt}
+### {prompt}
 {query}"""
     return query
 
