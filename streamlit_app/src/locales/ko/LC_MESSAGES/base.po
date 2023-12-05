@@ -108,7 +108,7 @@ msgstr ""
 
 #: app.py:85
 msgid "Submit"
-msgstr "업로드"
+msgstr "데이터 업로드"
 
 #: app.py:91
 msgid "File {} upload success"
