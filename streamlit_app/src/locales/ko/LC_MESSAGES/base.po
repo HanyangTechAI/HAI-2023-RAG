@@ -22,12 +22,12 @@ msgid "HAI ChatBot Demo"
 msgstr "HAI 챗봇 데모"
 
 #: app.py:28
-msgid "You are a chatbot that always answers with kindness and detail."
-msgstr "당신은 항상 친절하고 상세하게 답변하는 챗봇입니다."
+msgid "You are a chatbot that answers questions accurately and concisely based on the information you are given."
+msgstr "당신은 주어진 정보를 바탕으로 질문에 대해 정확하고 간결하게 답변하는 챗봇입니다."
 
 #: app.py:31
-msgid "Use the above information to answer the following query below."
-msgstr "위 정보를 사용하여 아래 질문에 답변하세요."
+msgid "Use the above information to answer the following query below:"
+msgstr "위 정보를 참조하여 아래 질문에 답변하세요:"
 
 #: app.py:34
 msgid "🎈 HAI RAG demo"
@@ -41,9 +41,13 @@ msgstr ""
 msgid "Currently logged in `{}`"
 msgstr "현재 `{}`에 로그인되어 있습니다."
 
+#: app.py:40
+msgid "Settings for semantic search"
+msgstr "의미 기반 검색 설정"
+
 #: app.py:41
 msgid "Select the language of the model"
-msgstr "모델의 언어를 선택하세요."
+msgstr "사용할 언어를 선택하세요."
 
 #: app.py:47
 msgid "Enter the name of database to use."
@@ -55,7 +59,7 @@ msgstr "사용할 참조의 수를 선택하세요."
 
 #: app.py:53
 msgid "Update"
-msgstr ""
+msgstr "업데이트"
 
 #: app.py:54
 msgid "Clear DB"
@@ -65,33 +69,37 @@ msgstr "DB 초기화"
 msgid "Settings updated"
 msgstr "설정이 업데이트되었습니다."
 
+#: app.py:57
+msgid "Clear Chat History"
+msgstr "대화 기록 삭제"
+
 #: app.py:63
 msgid "Collection {} delete success"
-msgstr ""
+msgstr "Collection {} 삭제에 성공했습니다"
 
 #: app.py:65
 msgid "Collection {} delete failed."
-msgstr ""
+msgstr "Collection {} 삭제에 실패했습니다."
 
 #: app.py:68
 msgid "Error occured while deleting collection {}."
-msgstr ""
+msgstr "Collection {} 삭제 과정에서 에러가 발생했습니다"
 
 #: app.py:71
 msgid "Upload File"
-msgstr ""
+msgstr "파일 업로드"
 
 #: app.py:72
 msgid "Upload documents for AI to reference"
-msgstr "AI가 참조할 문서를 업로드하세요."
+msgstr "AI가 참조할 자료 업로드"
 
 #: app.py:75
 msgid ""
-"- Once the file is entered, it is automatically split into pages and stored "
+"- Once the file or webpage is entered, it is automatically split into pages and stored "
 "in the DB.\n"
 "- When you type a question, it will answer based on the most relevant pages."
 msgstr ""
-"- 파일을 입력하면 자동으로 페이지로 분할되어 DB에 저장됩니다.\n"
+"- 파일이나 웹페이지를 추가하면 자동으로 페이지로 분할되어 DB에 저장됩니다.\n"
 "- 질문을 입력하면 가장 관련성이 높은 페이지를 기반으로 답변합니다."
 
 #: app.py:80
@@ -100,7 +108,7 @@ msgstr ""
 
 #: app.py:85
 msgid "Submit"
-msgstr "제출"
+msgstr "데이터 업로드"
 
 #: app.py:91
 msgid "File {} upload success"
@@ -114,10 +122,26 @@ msgstr "{} 파일 업로드에 실패했습니다."
 msgid "Error occured while uploading file {}."
 msgstr "{} 파일 업로드 중 오류가 발생했습니다."
 
+#: app.py:101
+msgid "Enter the URL of webpage to use"
+msgstr "사용할 웹페이지의 URL 입력"
+
+#: app.py:102
+msgid "Webpage {} upload success"
+msgstr "{} 페이지 업로드를 성공했습니다."
+
+#: app.py:103
+msgid "Webpage {} upload failed."
+msgstr "{} 페이지 업로드에 실패했습니다."
+
+#: app.py:104
+msgid "Error occured while uploading Webpage {}."
+msgstr "{} 페이지 업로드 중 오류가 발생했습니다."
+
 #: app.py:119
 msgid "How can I help you today?"
-msgstr "오늘은 어떻게 도와드릴까요?"
+msgstr "무엇을 도와드릴까요?"
 
 #: app.py:145
 msgid "References"
-msgstr ""
+msgstr "참고 자료 및 출처"

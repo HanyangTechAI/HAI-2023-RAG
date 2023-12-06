@@ -1,11 +1,23 @@
 import re
 
+import pandas as pd
 import docx
 import requests
 from kss import split_sentences
 from langchain.document_loaders import PyPDFLoader
 from pptx import Presentation
+from trafilatura import fetch_url, extract
 
+EMOJI = re.compile("["
+        u"\U00002700-\U000027BF"  # Dingbats
+        u"\U0001F600-\U0001F64F"  # Emoticons
+        u"\U00002600-\U000026FF"  # Miscellaneous Symbols
+        u"\U0001F300-\U0001F5FF"  # Miscellaneous Symbols And Pictographs
+        u"\U0001F900-\U0001F9FF"  # Supplemental Symbols and Pictographs
+        u"\U0001FA70-\U0001FAFF"  # Symbols and Pictographs Extended-A
+        u"\U0001F680-\U0001F6FF"  # Transport and Map Symbols
+        u"\U00010000-\U0010ffff"
+                      "]+", re.UNICODE)
 
 def normalize_text(text):
     text = re.sub(r" +", " ", text)
@@ -108,6 +120,12 @@ def convert_pptx_to_txt(file_path):
 
     return chunks
 
+def convert_xlsx_to_txt(file_path):
+    df = pd.read_excel(file_path)
+    df = df.apply(lambda x: x.str.replace('\n', '<br>') if x.dtype == 'object' else x)
+    
+    md_table = df.to_markdown(index=False)
+    return [md_table]
 
 def convert_file_to_txt(file_path, file_type=None):
     try:
@@ -119,6 +137,8 @@ def convert_file_to_txt(file_path, file_type=None):
             result = convert_pdf_to_txt(file_path)
         elif file_type == "docx":
             result = convert_docx_to_txt(file_path)
+        elif file_type == "xlsx":
+            result = convert_xlsx_to_txt(file_path)
         elif file_type == "pptx":
             result = convert_pptx_to_txt(file_path)
         else:
@@ -130,6 +150,20 @@ def convert_file_to_txt(file_path, file_type=None):
     result = [normalize_text(text) for text in result]
     return result
 
+def convert_webpage_to_txt(url):
+    text = ""
+
+    html = fetch_url(url)
+    if not html:
+        return None
+    else:
+        text = extract(html, include_images=True)
+        text = EMOJI.sub(r'', text)
+    
+    paragraphs = split_sentences(text, backend="mecab")
+    chunks = chunk_text(paragraphs)
+
+    return chunks
 
 if __name__ == "__main__":
     import glob, json
@@ -146,3 +180,10 @@ if __name__ == "__main__":
             ensure_ascii=False,
             indent=2,
         )
+        
+    webpage_url = "http://cs.hanyang.ac.kr/about/greeting.php"
+    chunks = convert_webpage_to_txt(webpage_url)
+    if chunks:
+        for i, chunk in enumerate(chunks):
+            print(f"\nChunk {i}")
+            print(chunk)

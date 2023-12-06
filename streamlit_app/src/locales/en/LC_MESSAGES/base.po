@@ -22,11 +22,11 @@ msgid "HAI ChatBot Demo"
 msgstr ""
 
 #: app.py:28
-msgid "You are a chatbot that always answers with kindness and detail."
+msgid "You are a chatbot that answers questions accurately and concisely based on the information you are given."
 msgstr ""
 
 #: app.py:31
-msgid "Use the above information to answer the following query below."
+msgid "Use the above information to answer the following query below:"
 msgstr ""
 
 #: app.py:34
@@ -39,6 +39,10 @@ msgstr ""
 
 #: app.py:39
 msgid "Currently logged in `{}`"
+msgstr ""
+
+#: app.py:40
+msgid "Settings for semantic search"
 msgstr ""
 
 #: app.py:41
@@ -65,6 +69,10 @@ msgstr ""
 msgid "Settings updated"
 msgstr ""
 
+#: app.py:57
+msgid "Clear Chat History"
+msgstr ""
+
 #: app.py:63
 msgid "Collection {} delete success"
 msgstr ""
@@ -87,7 +95,7 @@ msgstr ""
 
 #: app.py:75
 msgid ""
-"- Once the file is entered, it is automatically split into pages and stored "
+"- Once the file or webpage is entered, it is automatically split into pages and stored "
 "in the DB.\n"
 "- When you type a question, it will answer based on the most relevant pages."
 msgstr ""
@@ -110,6 +118,22 @@ msgstr ""
 
 #: app.py:95
 msgid "Error occured while uploading file {}."
+msgstr ""
+
+#: app.py:101
+msgid "Enter the URL of webpage to use"
+msgstr ""
+
+#: app.py:102
+msgid "Webpage {} upload success"
+msgstr ""
+
+#: app.py:103
+msgid "Webpage {} upload failed."
+msgstr ""
+
+#: app.py:104
+msgid "Error occured while uploading Webpage {}."
 msgstr ""
 
 #: app.py:119

@@ -4,7 +4,7 @@ import gettext
 import streamlit as st
 
 from llm import get_generation_prompt, generate
-from search import store_file_to_db, search, delete
+from search import store_file_to_db, store_webpage_to_db, search, delete
 
 languages = ["en", "ko"]
 localizator = gettext.translation(
@@ -25,73 +25,107 @@ if "language" not in st.session_state:
 if "collection_name" not in st.session_state or st.session_state.collection_name == "":
     st.session_state.collection_name = "default"
 
-system_message = _("You are a chatbot that always answers with kindness and detail.")
-rag_message = _("Use the above information to answer the following query below.")
-
 st.title(_("🎈 HAI RAG demo"))
+col_stat, col_lang = st.columns([1, 1])
+col_stat.subheader(_("Currently logged in `{}`").format(st.session_state.collection_name))
+language = col_lang.radio(
+    _("Select the language of the model"),
+    languages,
+    index=languages.index(st.session_state.language),
+    key="language",
+    horizontal=True,
+)
 
-col0, col1 = st.columns([1, 1])
+system_message = _("You are a chatbot that answers questions accurately and concisely based on the information you are given.")
+rag_message = _("Use the above information to answer the following query below:")
 
-with col0.form(_("Settings"), clear_on_submit=False):
-    st.subheader(_("Currently logged in `{}`").format(st.session_state.collection_name))
-    language = st.selectbox(
-        _("Select the language of the model"),
-        languages,
-        index=languages.index(st.session_state.language),
-        key="language",
-    )
-    collection_name = st.text_input(
-        label=_("Enter the name of database to use."), key="collection_name"
-    )
-    top_k = st.slider(
-        _("Select the number of references to use"), 0, 10, 3, key="top_k"
-    )
+expander_cont = st.container()
+info_cont = st.container()
 
-    update_setting_button = st.form_submit_button(_("Update"))
-    clear_db_button = st.form_submit_button(_("Clear DB"))
-
-if update_setting_button and not clear_db_button:
-    st.success(_("Settings updated"))
-
-if clear_db_button and not update_setting_button:
-    try:
-        result = delete(collection_name)
-        if result:
-            st.success(_("Collection {} delete success").format(collection_name))
-        else:
-            st.warning(_("Collection {} delete failed.").format(collection_name))
-    except:
-        st.error(
-            _("Error occured while deleting collection {}.").format(collection_name)
+with expander_cont.expander("", expanded=True):
+    col0, col1 = st.columns([1, 1])
+    col0.subheader(_("Settings for semantic search"))
+    with col0.form(_("Settings for semantic search"), clear_on_submit=False):
+        col_lang, col_name = st.columns([1, 1])
+        collection_name = st.text_input(
+            label=_("Enter the name of database to use."), key="collection_name"
+        )
+        top_k = st.slider(
+            _("Select the number of references to use"), 0, 10, 3, key="top_k"
         )
 
-with col1.form(_("Upload File"), clear_on_submit=False):
-    st.subheader(_("Upload documents for AI to reference"))
-    st.markdown(
+        col_update, col_delete, col_clear = st.columns([1, 1, 1])
+        update_setting_button = col_update.form_submit_button(_("Update"))
+        clear_db_button = col_delete.form_submit_button(_("Clear DB"))
+        clear_history_button = col_clear.form_submit_button(_("Clear Chat History"))
+        
+        if update_setting_button:
+            info_cont.success(_("Settings updated"))
+
+        if clear_db_button:
+            try:
+                result = delete(collection_name)
+                if result:
+                    info_cont.success(_("Collection {} delete success").format(collection_name))
+                else:
+                    info_cont.warning(_("Collection {} delete failed.").format(collection_name))
+            except:
+                info_cont.error(
+                    _("Error occured while deleting collection {}.").format(collection_name)
+                )
+                
+        if clear_history_button:
+            st.session_state.messages = [
+                {
+                    "role": "system",
+                    "content": system_message,
+                    "reference": "",
+                }
+            ]
+
+    col1.subheader(_("Upload documents for AI to reference"))
+    col1.markdown(
         _(
-            "- Once the file is entered, it is automatically split into pages and stored in the DB.\n- When you type a "
+            "- Once the file or webpage is entered, it is automatically split into pages and stored in the DB.\n- When you type a "
             "question, it will answer based on the most relevant pages."
         )
     )
-    uploaded_file = st.file_uploader(
-        _("Uplode files"),
-        ["pdf", "docx", "pptx", "hwp", "txt"],
-        accept_multiple_files=False,
-        label_visibility="hidden",
-    )
-    submit_button = st.form_submit_button(_("Submit"))
-
-if submit_button and uploaded_file:
-    try:
-        result = store_file_to_db(collection_name, uploaded_file, language)
-        if result:
-            st.success(_("File {} upload success").format(uploaded_file.name))
+    input_type = col1.radio("Input Type", [_("File"), _("Webpage")], label_visibility="collapsed")
+    with col1.form(_("Upload File"), clear_on_submit=False):
+        if input_type == _("File"):
+            uploaded_file = st.file_uploader(
+                _("Uplode files"),
+                ["txt", "pdf", "docx", "xlsx", "pptx", "hwp"],
+                accept_multiple_files=False,
+                label_visibility="hidden",
+            )
+            webpage_url = None
         else:
-            st.warning(_("File {} upload failed.").format(uploaded_file.name))
-    except:
-        st.error(_("Error occured while uploading file {}.").format(uploaded_file.name))
+            uploaded_file = None
+            webpage_url = st.text_input("URL", placeholder=_("Enter the URL of webpage to use"))
 
-# Initialize chat histor
+        submit_button = st.form_submit_button(_("Submit"))
+        if submit_button:
+            if uploaded_file:
+                try:
+                    result = store_file_to_db(collection_name, uploaded_file, language)
+                    if result:
+                        info_cont.success(_("File {} upload success").format(uploaded_file.name))
+                    else:
+                        info_cont.warning(_("File {} upload failed.").format(uploaded_file.name))
+                except:
+                    info_cont.error(_("Error occured while uploading file {}.").format(uploaded_file.name))
+            elif webpage_url:
+                try:
+                    result = store_webpage_to_db(collection_name, webpage_url, language)
+                    if result:
+                        info_cont.success(_("Webpage {} upload success").format(webpage_url))
+                    else:
+                        info_cont.warning(_("Webpage {} upload failed.").format(webpage_url))
+                except:
+                    info_cont.error(_("Error occured while uploading webpage {}.").format(webpage_url))
+
+# Initialize chat history
 if "messages" not in st.session_state:
     st.session_state.messages = [
         {
