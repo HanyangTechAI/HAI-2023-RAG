@@ -48,7 +48,7 @@ def generate(prompt: str, max_new_tokens: int = 1024):
             "repetition_penalty": 1.05,
             "details": False,
             "decoder_input_details": False,
-            "stop": ["</s>"],
+            "stop": ["</s>", "<|user|>"],
         },
     }
     with requests.post(url=url, json=data, stream=True) as response:
