@@ -143,7 +143,7 @@ for message in st.session_state.messages:
         with st.chat_message(message["role"]):
             st.markdown(message["content"])
             if message.get("reference"):
-                with st.expander("References"):
+                with st.expander(_("References")):
                     st.markdown(message["reference"])
 
 # React to user input

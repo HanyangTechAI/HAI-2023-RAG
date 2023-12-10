@@ -44,7 +44,7 @@ def generate(prompt: str, max_new_tokens: int = 1024):
     data = {
         "inputs": prompt,
         "parameters": {
-            # "max_new_tokens": max_new_tokens,
+            "max_new_tokens": max_new_tokens,
             "repetition_penalty": 1.05,
             "details": False,
             "decoder_input_details": False,
