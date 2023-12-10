@@ -161,6 +161,8 @@ cython_debug/
 
 # Custom
 files
+webpages
 chroma
 emb_cache
 llm_cache
+models

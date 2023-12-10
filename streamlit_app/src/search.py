@@ -5,8 +5,8 @@ import requests
 
 from files import convert_file_to_txt, convert_webpage_to_txt
 
-os.makedirs("files", exist_ok=True)
-os.makedirs("webpages", exist_ok=True)
+os.makedirs("/files", exist_ok=True)
+os.makedirs("/webpages", exist_ok=True)
 
 search_api_url = "http://localhost:40103"
 search_api_session = requests.session()
@@ -83,12 +83,12 @@ def search(collection_name, query, lang: str = "en", top_k: int = 5):
 
 def store_file_to_db(collection_name, uploaded_file, lang: str = "en"):
     filename = uploaded_file.name
-    with open(f"files/{filename}", "wb") as f:
+    with open(f"/files/{filename}", "wb") as f:
         f.write(uploaded_file.read())
 
     create(collection_name)
 
-    documents = convert_file_to_txt(f"files/{filename}")
+    documents = convert_file_to_txt(f"/files/{filename}")
     metadatas = [
         {
             "file_name": filename,
@@ -102,7 +102,7 @@ def store_file_to_db(collection_name, uploaded_file, lang: str = "en"):
     return True
 
 def store_webpage_to_db(collection_name, url, lang: str = "en"):
-    with open(f"webpages/url_{collection_name}.log", "a") as f:
+    with open(f"/webpages/url_{collection_name}.log", "a") as f:
         f.write(f"{url}\n")
 
     create(collection_name)
