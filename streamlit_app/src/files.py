@@ -64,7 +64,10 @@ def convert_pdf_to_txt(file_path):
     loader = PyPDFLoader(file_path)
     pages = loader.load()
     paragraphs = [page.page_content for page in pages]
-    chunks = chunk_text(paragraphs)
+    chunks = []
+    for paragraph in paragraphs:
+        splitted_paragraph = split_sentences(paragraph, backend="mecab")
+        chunks.extend(chunk_text(splitted_paragraph))
     return chunks
 
 
