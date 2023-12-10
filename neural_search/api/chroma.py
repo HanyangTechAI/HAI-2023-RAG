@@ -19,6 +19,9 @@ emb_func = {
     ),
 }
 
+# Load & warmup embedding models
+for func in emb_func.values():
+    func("Hello World!")
 
 def create_collection(collection_name: str, metadata: dict = None):
     if not metadata:
